@@ -44,7 +44,6 @@ for dataset in data:
     dataset["Cabin"].fillna("U0", inplace=True)
     for i in dataset.index:
         dataset.at[i, "Cabin"] = dataset["Cabin"][i][:1]
-        dataset["Deck"] = dataset["Cabin"].map(deck)
     dataset["Deck"] = dataset["Deck"].fillna(0)
     dataset["Deck"] = dataset["Deck"].astype(int)
 
@@ -83,7 +82,13 @@ data = [train_df, test_df]
 for dataset in data:
     dataset["Age_Class"] = dataset["Age"] * dataset["Pclass"]
 
-###############
+# Fare per Person
+data = [train_df, test_df]
+for dataset in data:
+    dataset['Fare_Per_Person'] = dataset['Fare']/(dataset['relatives']+1)
+    dataset['Fare_Per_Person'] = dataset['Fare_Per_Person'].astype(int)
+###########
+
 # Need to redo this part i dont like the way it is done
 data = [train_df, test_df]
 titles = {"Mr": 1, "Miss": 2, "Mrs": 3, "Master": 4, "Rare": 5}
@@ -106,9 +111,9 @@ train_df = train_df.drop(["Name"], axis=1)
 test_df = test_df.drop(["Name"], axis=1)
 
 train_df = pd.get_dummies(
-    train_df, columns=["Embarked", "Sex", "Pclass"], drop_first=True)
+    train_df, columns=["Embarked", "Sex"], drop_first=True)
 test_df = pd.get_dummies(
-    test_df, columns=["Embarked", "Sex", "Pclass"], drop_first=True)
+    test_df, columns=["Embarked", "Sex"], drop_first=True)
 
 
 data = [train_df, test_df]
@@ -117,12 +122,6 @@ for dataset in data:
     dataset["Fare"] = dataset["Fare"].astype(int)
 
 
-# Fare per Person
-data = [train_df, test_df]
-for dataset in data:
-    dataset['Fare_Per_Person'] = dataset['Fare']/(dataset['relatives']+1)
-    dataset['Fare_Per_Person'] = dataset['Fare_Per_Person'].astype(int)
-###########
 # The groups were produced by the qcut function
 #categories = pd.qcut(train_df["Fare"], q=6)
 
@@ -149,8 +148,8 @@ train_df = train_df.drop("PassengerId", axis=1)
 train_df = train_df.drop("Embarked_Q", axis=1)
 test_df = test_df.drop("Embarked_Q", axis=1)
 
-train_df = train_df.drop("Pclass_2", axis=1)
-test_df = test_df.drop("Pclass_2", axis=1)
+# train_df = train_df.drop("Pclass_2", axis=1)
+# test_df = test_df.drop("Pclass_2", axis=1)
 
 train_df = train_df.drop("not_alone", axis=1)
 test_df = test_df.drop("not_alone", axis=1)
@@ -158,8 +157,8 @@ test_df = test_df.drop("not_alone", axis=1)
 train_df = train_df.drop("Parch", axis=1)
 test_df = test_df.drop("Parch", axis=1)
 
-train_df = train_df.drop("Embarked_S", axis=1)
-test_df = test_df.drop("Embarked_S", axis=1)
+# train_df = train_df.drop("Embarked_S", axis=1)
+# test_df = test_df.drop("Embarked_S", axis=1)
 
 ########
 # Now we can start to train the model
@@ -171,7 +170,7 @@ X_test = test_df.drop("PassengerId", axis=1).copy()
 
 # I will stick to the RandomForestClassifier because this method has shown the best results of all
 
-model = RandomForestClassifier(n_estimators=100, max_depth=2)
+model = RandomForestClassifier(n_estimators=150, max_depth=2)
 model.fit(X_train, Y_train)
 
 Y_prediction = model.predict(X_test)
