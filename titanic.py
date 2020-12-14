@@ -13,9 +13,11 @@ print("Start")
 # The basic data exploration and visualization has been done in the jupyter notebook
 # Therefore i will not repeat the steps in this
 
+test_df = pd.read_csv("test.csv")
+train_df = pd.read_csv("train.csv")
 
-test_df = pd.read_csv("../Jupyter/titanic/test.csv")
-train_df = pd.read_csv("../Jupyter/titanic/train.csv")
+# test_df = pd.read_csv("../Jupyter/titanic/test.csv")
+# train_df = pd.read_csv("../Jupyter/titanic/train.csv")
 
 
 data = [train_df, test_df]
