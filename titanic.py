@@ -83,11 +83,6 @@ data = [train_df, test_df]
 for dataset in data:
     dataset["Age_Class"] = dataset["Age"] * dataset["Pclass"]
 
-# Fare per Person
-data = [train_df, test_df]
-for dataset in data:
-    dataset['Fare_Per_Person'] = dataset['Fare']/(dataset['relatives']+1)
-    dataset['Fare_Per_Person'] = dataset['Fare_Per_Person'].astype(int)
 ###########
 
 # Need to redo this part i dont like the way it is done
@@ -122,6 +117,12 @@ for dataset in data:
     dataset["Fare"] = dataset["Fare"].fillna(dataset["Fare"].mean().round(1))
     dataset["Fare"] = dataset["Fare"].astype(int)
 
+
+# Fare per Person
+data = [train_df, test_df]
+for dataset in data:
+    dataset['Fare_Per_Person'] = dataset['Fare']/(dataset['relatives']+1)
+    dataset['Fare_Per_Person'] = dataset['Fare_Per_Person'].astype(int)
 
 # The groups were produced by the qcut function
 #categories = pd.qcut(train_df["Fare"], q=6)
