@@ -44,6 +44,7 @@ for dataset in data:
     dataset["Cabin"].fillna("U0", inplace=True)
     for i in dataset.index:
         dataset.at[i, "Cabin"] = dataset["Cabin"][i][:1]
+    dataset["Deck"] = dataset["Cabin"].map(deck)
     dataset["Deck"] = dataset["Deck"].fillna(0)
     dataset["Deck"] = dataset["Deck"].astype(int)
 
